@@ -1,0 +1,16 @@
+// src/middleware/auth.middleware.js
+import jwt from "jsonwebtoken";
+
+export default (req, res, next) => {
+  const auth = req.headers.authorization ?? "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
+
+  if (!token) return res.status(401).json({ msg: "Chybí token." });
+
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET).sub;
+    next();
+  } catch (_) {
+    res.status(401).json({ msg: "Neplatný nebo expirovaný token." });
+  }
+};
