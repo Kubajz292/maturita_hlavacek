@@ -7,10 +7,10 @@ export const register = async (req, res, next) => {
   try {
     const { username, password, aiConsent } = req.body;
     if (!aiConsent)
-      return res.status(400).json({ msg: "Musíš potvrdit souhlas s AI." });
+      return res.status(400).json({ msg: "Musíš potvrdit souhlas s AI." });
 
     if (await User.findOne({ username }))
-      return res.status(409).json({ msg: "Uživatel již existuje." });
+      return res.status(409).json({ msg: "Uživatel už existuje." });
 
     const passwordHash = await bcrypt.hash(password, 12);
     const user = await User.create({ username, passwordHash, aiConsent });
@@ -25,7 +25,7 @@ export const login = async (req, res, next) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user || !(await user.comparePassword(password)))
-      return res.status(401).json({ msg: "Nesprávné přihlašovací údaje." });
+      return res.status(401).json({ msg: "Špatné přihlašovací údaje." });
 
     const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, {
       expiresIn: "8h",
