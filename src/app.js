@@ -14,3 +14,4 @@ app.use("/api/notes", noteRoutes);
 app.get("/", (_req, res) => res.send("🟢 Notes API running"));
 
 export default app;
+

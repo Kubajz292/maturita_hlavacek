@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Notes App</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      #login, #register, #noteForm { margin-bottom: 1rem; }
+      .note { border: 1px solid #ccc; padding: 0.5rem; margin: 0.5rem 0; }
+      .important { background: #fff6c9; }
+      button { margin-left: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Notes App</h1>
+
+    <!-- přepínač -->
+    <div id="authToggle">
+      <button onclick="showLogin()">Přihlášení</button>
+      <button onclick="showRegister()">Registrace</button>
+    </div>
+
+    <!-- registrace -->
+    <form id="register" onsubmit="register(event)" hidden>
+      <h2>Registrace</h2>
+      <input id="regUser" placeholder="Uživatelské jméno" required />
+      <input id="regPass" type="password" placeholder="Heslo" required />
+      <label>
+        <input id="regConsent" type="checkbox" required />
+        Souhlasím s AI
+      </label>
+      <button>Registrovat</button>
+    </form>
+
+    <!-- login -->
+    <form id="login" onsubmit="login(event)">
+      <h2>Přihlášení</h2>
+      <input id="logUser" placeholder="Uživatelské jméno" required />
+      <input id="logPass" type="password" placeholder="Heslo" required />
+      <button>Přihlásit</button>
+    </form>
+
+    <!-- po přihlášení -->
+    <div id="app" hidden>
+      <p>
+        Přihlášen jako <b id="who"></b>
+        <button onclick="logout()">Odhlásit</button>
+        <button onclick="deleteAccount()">Zrušit účet</button>
+      </p>
+
+      <form id="noteForm" onsubmit="addNote(event)">
+        <input id="noteTitle" placeholder="Nadpis" required />
+        <input id="noteBody" placeholder="Text" required />
+        <button>Přidat poznámku</button>
+        <label>
+          <input id="showImportant" type="checkbox" onchange="loadNotes()" />
+          jen důležité
+        </label>
+      </form>
+
+      <div id="notes"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
