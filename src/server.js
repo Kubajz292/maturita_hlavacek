@@ -1,5 +1,20 @@
 // src/server.js
-import "dotenv/config";
+//--------------------------------------------------------------
+// 1) Načti .env explicitně z kořene projektu
+//--------------------------------------------------------------
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import path from "path";
+
+// __dirname = absolutní cesta ke složce /src
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ../.env = o úroveň výš (kořen projektu)
+dotenv.config({ path: path.join(__dirname, "../.env") });
+
+//--------------------------------------------------------------
+// 2) Ostatní importy a spuštění serveru
+//--------------------------------------------------------------
 import mongoose from "mongoose";
 import app from "./app.js";
 
