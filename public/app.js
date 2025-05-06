@@ -15,17 +15,19 @@ if (page.includes("login")) {
     };
 
     try {
-      const res = await fetch(`${API}/auth/login`, fetchOpt(body));
+      const res = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       const data = await res.json();
       if (!res.ok) throw data;
 
-      token = data.token;
-      username = body.username;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", username);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", body.username);
       location.href = "app.html";
     } catch (err) {
-      alert("❌ Přihlášení selhalo: " + (err.msg || "Neznámá chyba"));
+      alert("❌ Přihlášení selhalo: " + (err.msg || "Chyba"));
     }
   };
 }
@@ -41,14 +43,18 @@ if (page.includes("register")) {
     };
 
     try {
-      const res = await fetch(`${API}/auth/register`, fetchOpt(body));
+      const res = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       const data = await res.json();
       if (!res.ok) throw data;
 
-      alert("✅ Registrace úspěšná. Můžeš se přihlásit.");
+      alert("✅ Registrováno, můžeš se přihlásit.");
       location.href = "login.html";
     } catch (err) {
-      alert("❌ Registrace selhala: " + (err.msg || "Neznámá chyba"));
+      alert("❌ Chyba registrace: " + (err.msg || "Neznámá chyba"));
     }
   };
 }
@@ -56,10 +62,8 @@ if (page.includes("register")) {
 /* ========== APP ========== */
 if (page.includes("app")) {
   if (!token) location.href = "login.html";
-  else {
-    qs("#who").textContent = username;
-    loadNotes();
-  }
+
+  qs("#who").textContent = username;
 
   window.logout = () => {
     localStorage.clear();
@@ -67,101 +71,110 @@ if (page.includes("app")) {
   };
 
   window.deleteAccount = async () => {
-    const password = prompt("Zadej heslo pro zrušení účtu:");
+    const password = prompt("Zadej své heslo pro potvrzení:");
     if (!password) return;
 
-    try {
-      const res = await fetchWithAuth(`${API}/user/account`, {
-        method: "DELETE",
-        body: JSON.stringify({ password }),
-      });
-      if (!res.ok) throw await res.json();
+    const res = await fetch(`${API}/user/account`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ password }),
+    });
 
-      alert("✅ Účet zrušen.");
+    if (res.ok) {
+      alert("Účet zrušen.");
       logout();
-    } catch (err) {
-      alert("❌ Chyba při rušení účtu: " + (err.msg || "Neznámá chyba"));
+    } else {
+      const data = await res.json();
+      alert("Chyba: " + (data.msg || "Nepodařilo se zrušit účet."));
     }
   };
 
   window.addNote = async (e) => {
     e.preventDefault();
-    const body = {
-      title: qs("#noteTitle").value.trim(),
-      body: qs("#noteBody").value.trim(),
-    };
+    const title = qs("#noteTitle").value.trim();
+    const body = qs("#noteBody").value.trim();
+    if (!title || !body) return alert("Zadej název a text.");
 
-    if (!body.title || !body.body) return alert("Vyplň nadpis i text.");
+    const res = await fetch(`${API}/notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title, body }),
+    });
 
-    try {
-      const res = await fetchWithAuth(`${API}/notes`, {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) throw await res.json();
+    if (res.ok) {
       e.target.reset();
       loadNotes();
-    } catch (err) {
-      alert("❌ Chyba při přidávání poznámky: " + (err.msg || "Neznámá chyba"));
+    } else {
+      const data = await res.json();
+      alert("❌ Chyba při přidání: " + (data.msg || "Chyba"));
     }
   };
 
   window.loadNotes = async () => {
     const importantOnly = qs("#showImportant")?.checked;
-    try {
-      const res = await fetchWithAuth(
-        `${API}/notes${importantOnly ? "?important=true" : ""}`
-      );
-      const notes = await res.json();
+    const url = `${API}/notes${importantOnly ? "?important=true" : ""}`;
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      const box = qs("#notes");
-      box.innerHTML = "";
+    const notes = await res.json();
+    const box = qs("#notes");
+    box.innerHTML = "";
 
-      if (!notes || !notes.length) {
-        box.innerHTML = "<p style='color:#888'>Žádné poznámky k zobrazení.</p>";
-        return;
-      }
-
-      notes.forEach((n) => {
-        const div = document.createElement("div");
-        div.className = "note" + (n.important ? " important" : "");
-        div.innerHTML = `
-          <b>${n.title}</b>
-          <small>${new Date(n.createdAt).toLocaleString()}</small>
-          <p>${n.body}</p>
-          <button onclick="toggleImportant('${n._id}')">
-            ${n.important ? "Zrušit důležitost" : "Označit jako důležité"}
-          </button>
-          <button class="danger" onclick="delNote('${n._id}')">Smazat</button>
-        `;
-        box.appendChild(div);
-      });
-    } catch (err) {
-      qs("#notes").innerHTML = "<p>❌ Nepodařilo se načíst poznámky.</p>";
+    if (!notes.length) {
+      box.innerHTML = "<p style='color:#888'>Žádné poznámky.</p>";
+      return;
     }
+
+    notes.forEach((n) => {
+      const div = document.createElement("div");
+      div.className = "note" + (n.important ? " important" : "");
+      div.innerHTML = `
+        <b>${n.title}</b>
+        <small>${new Date(n.createdAt).toLocaleString()}</small>
+        <p>${n.body}</p>
+        <button onclick="toggleImportant('${n._id}')">
+          ${n.important ? "Zrušit důležitost" : "Označit jako důležité"}
+        </button>
+        <button class="danger" onclick="delNote('${n._id}')">Smazat</button>
+      `;
+      box.appendChild(div);
+    });
   };
 
   window.toggleImportant = async (id) => {
-    await fetchWithAuth(`${API}/notes/${id}/important`, { method: "PATCH" });
+    await fetch(`${API}/notes/${id}/important`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     loadNotes();
   };
 
   window.delNote = async (id) => {
-    if (!confirm("Opravdu smazat poznámku?")) return;
-    await fetchWithAuth(`${API}/notes/${id}`, { method: "DELETE" });
+    if (!confirm("Opravdu smazat?")) return;
+    await fetch(`${API}/notes/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     loadNotes();
   };
+
+  loadNotes();
 }
 
-/* ========== HELPERS ========== */
-function fetchOpt(body) {
-  return {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  };
-}
-
+/* ========== Helpers ========== */
 function fetchWithAuth(url, opts = {}) {
   return fetch(url, {
     ...opts,
