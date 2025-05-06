@@ -3,6 +3,7 @@ import Note from "../models/note.model.js";
 
 export const createNote = async (req, res, next) => {
   try {
+    console.log("✔️ CREATE note for user:", req.user);
     const note = await Note.create({ ...req.body, userId: req.user });
     res.status(201).json(note);
   } catch (err) {
@@ -14,6 +15,9 @@ export const listNotes = async (req, res, next) => {
   try {
     const filter = { userId: req.user };
     if (req.query.important === "true") filter.important = true;
+
+    console.log("📥 LIST notes for user:", req.user, "filter:", filter);
+
     const notes = await Note.find(filter).sort({ createdAt: -1 });
     res.json(notes);
   } catch (err) {

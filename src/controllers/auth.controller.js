@@ -7,7 +7,7 @@ export const register = async (req, res, next) => {
   try {
     const { username, password, aiConsent } = req.body;
     if (!aiConsent)
-      return res.status(400).json({ msg: "Musíš potvrdit souhlas s AI." });
+      return res.status(400).json({ msg: "Musíš potvrdit souhlas s AI." });
 
     if (await User.findOne({ username }))
       return res.status(409).json({ msg: "Uživatel už existuje." });
