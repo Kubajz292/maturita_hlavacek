@@ -3,67 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Moderní aplikace pro správu poznámek s důrazem na bezpečnost a jednoduchost." />
-    <meta name="author" content="Tvoje jméno" />
-    <meta name="robots" content="index, follow" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📝</text></svg>">
-    <title>Notes App 💡</title>
+    <title>Notes App</title>
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <main>
+    <main style="text-align: center">
       <h1>📝 Notes App</h1>
-
-      <!-- Auth Toggle -->
-      <div id="authToggle">
-        <button onclick="showLogin()">🔐 Přihlášení</button>
-        <button onclick="showRegister()">🆕 Registrace</button>
-      </div>
-
-      <!-- REGISTRATION FORM -->
-      <form id="register" onsubmit="register(event)" hidden>
-        <h2>Registrace</h2>
-        <input id="regUser" placeholder="Uživatelské jméno" required />
-        <input id="regPass" type="password" placeholder="Heslo" required />
-        <label>
-          <input id="regConsent" type="checkbox" required />
-          Souhlasím se zpracováním dat pro AI účely
-        </label>
-        <button>Registrovat</button>
-      </form>
-
-      <!-- LOGIN FORM -->
-      <form id="login" onsubmit="login(event)">
-        <h2>Přihlášení</h2>
-        <input id="logUser" placeholder="Uživatelské jméno" required />
-        <input id="logPass" type="password" placeholder="Heslo" required />
-        <button>Přihlásit</button>
-      </form>
-
-      <!-- APP -->
-      <section id="app" hidden>
-        <div class="user-info">
-          Přihlášen: <b id="who"></b>
-          <button onclick="logout()">Odhlásit</button>
-          <button class="danger" onclick="deleteAccount()">🗑️ Zrušit účet</button>
-        </div>
-
-        <form id="noteForm" onsubmit="addNote(event)">
-          <input id="noteTitle" placeholder="Nadpis" required />
-          <input id="noteBody" placeholder="Text" required />
-          <button>Přidat poznámku</button>
-          <label>
-            <input id="showImportant" type="checkbox" onchange="loadNotes()" />
-            Zobrazit jen důležité
-          </label>
-        </form>
-
-        <!-- loader + notes -->
-        <div id="loader" hidden><div class="spinner"></div></div>
-        <div id="notes"></div>
-      </section>
+      <p>Vítej v aplikaci pro poznámky.</p>
+      <a href="login.html"><button>🔐 Přihlášení</button></a>
+      <a href="register.html"><button>🆕 Registrace</button></a>
     </main>
-    <script src="app.js"></script>
   </body>
 </html>

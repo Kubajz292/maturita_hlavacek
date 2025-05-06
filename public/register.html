@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrace</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>🆕 Registrace</h1>
+      <form id="register" onsubmit="register(event)">
+        <input id="regUser" placeholder="Uživatelské jméno" required />
+        <input id="regPass" type="password" placeholder="Heslo" required />
+        <label>
+          <input id="regConsent" type="checkbox" required />
+          Souhlasím s AI využitím dat
+        </label>
+        <button>Registrovat</button>
+      </form>
+      <p><a href="login.html">Už máš účet? Přihlas se</a></p>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moje Poznámky</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>📝 Moje poznámky</h1>
+      <div class="user-info">
+        Přihlášen: <b id="who"></b>
+        <button onclick="logout()">Odhlásit</button>
+        <button class="danger" onclick="deleteAccount()">🗑️ Zrušit účet</button>
+      </div>
+      <form id="noteForm" onsubmit="addNote(event)">
+        <input id="noteTitle" placeholder="Nadpis" required />
+        <input id="noteBody" placeholder="Text" required />
+        <button>Přidat poznámku</button>
+        <label>
+          <input id="showImportant" type="checkbox" onchange="loadNotes()" />
+          Zobrazit jen důležité
+        </label>
+      </form>
+      <div id="loader" hidden><div class="spinner"></div></div>
+      <div id="notes"></div>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
