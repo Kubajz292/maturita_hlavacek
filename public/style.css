@@ -1,109 +1,92 @@
 :root {
-    --bg: #111;
-    --fg: #f1f1f1;
-    --accent: #ffb400;
-    --accent-light: #ffe58f;
-    --danger: #ff4e4e;
-    --box: #1e1e1e;
-    --highlight: #222f;
+    --bg: #f7f7f7;
+    --fg: #111;
+    --accent: #4a90e2;
+    --danger: #e74c3c;
+    --box: #fff;
     --font-main: "Inter", sans-serif;
   }
   
   * {
     box-sizing: border-box;
-    transition: all 0.2s ease-in-out;
   }
   
   body {
     margin: 0;
     padding: 2rem;
-    background-color: var(--bg);
+    background: var(--bg);
     color: var(--fg);
     font-family: var(--font-main);
-    line-height: 1.5;
     display: flex;
     justify-content: center;
   }
   
   main {
     width: 100%;
-    max-width: 720px;
-    padding: 1rem;
+    max-width: 760px;
   }
   
   h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: var(--accent);
-  }
-  h2 {
-    margin-top: 2rem;
-    color: var(--accent-light);
+    color: var(--fg);
+    font-weight: 600;
   }
   
   form {
     background: var(--box);
     padding: 1rem;
     border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 0 0.5rem #0004;
+    box-shadow: 0 2px 6px #0001;
+    margin-bottom: 1.5rem;
   }
   
   input[type="text"],
   input[type="password"] {
     width: 100%;
-    padding: 0.6rem;
-    margin: 0.4rem 0;
-    background: #222;
-    color: var(--fg);
-    border: 1px solid #333;
-    border-radius: 5px;
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 1rem;
   }
   
   button {
-    background: var(--accent);
-    color: black;
+    padding: 0.6rem 1.2rem;
     border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: var(--accent);
+    color: white;
     font-weight: 600;
-    font-size: 1rem;
-    margin-top: 0.5rem;
     cursor: pointer;
   }
   button:hover {
-    background: var(--accent-light);
+    background: #357ab8;
   }
   button.danger {
     background: var(--danger);
-    color: white;
   }
   button.danger:hover {
-    background: #ff7b7b;
+    background: #c0392b;
   }
   
-  #notes {
-    margin-top: 1rem;
-  }
   .note {
     background: var(--box);
+    border-left: 4px solid #ccc;
     padding: 1rem;
     margin-bottom: 1rem;
-    border-left: 4px solid var(--highlight);
     border-radius: 6px;
-    box-shadow: 0 0 5px #0005;
+    box-shadow: 0 1px 4px #0002;
   }
   .note.important {
     border-left-color: var(--accent);
-    background-color: #2a2a00;
+    background-color: #eaf3ff;
   }
-  .note p {
-    margin: 0.5rem 0;
-  }
-  .note button {
-    margin-right: 0.5rem;
+  .note small {
+    display: block;
+    color: #888;
+    margin-bottom: 0.5rem;
   }
   
   label {
@@ -116,38 +99,18 @@
   .user-info {
     background: var(--box);
     padding: 1rem;
-    margin: 1rem 0;
     border-radius: 6px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px #0001;
   }
   
-  /* LOADER */
-  #loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  #notes {
     margin-top: 1rem;
   }
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 4px solid #444;
-    border-top: 4px solid var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
   
-  /* RESPONSIVE */
   @media (max-width: 600px) {
     body {
       padding: 1rem;
-    }
-    h1 {
-      font-size: 1.5rem;
     }
     button {
       width: 100%;
