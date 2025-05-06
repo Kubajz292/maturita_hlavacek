@@ -120,21 +120,13 @@
     border-radius: 6px;
   }
   
-  #authToggle {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* ========== LOADER ========== */
+  /* LOADER */
   #loader {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
   }
-  
   .spinner {
     width: 32px;
     height: 32px;
@@ -143,13 +135,13 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
-  
   @keyframes spin {
     to {
       transform: rotate(360deg);
     }
   }
   
+  /* RESPONSIVE */
   @media (max-width: 600px) {
     body {
       padding: 1rem;
