@@ -1,4 +1,5 @@
-const API = "/api";
+const API = "https://maturita-hlavacek.onrender.com";
+
 let token = localStorage.getItem("token") || null;
 let username = localStorage.getItem("user") || null;
 
